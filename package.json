@@ -11,5 +11,8 @@
     "mongoose-type-email": "^1.1.2",
     "nodemon": "^3.1.4",
     "winston": "^3.13.1"
+  },
+  "devDependencies": {
+    "gitgraph": "^0.0.1"
   }
 }

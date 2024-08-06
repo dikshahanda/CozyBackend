@@ -16,7 +16,7 @@ const register = async (req, res, next)=>{
         const result = JoiSchema.validate({userName, email, password, confirmPassword});
         console.log(result)
         if(result.error){
-            return res.status(501).send({error:result.error.details})
+            return res.status(501).send({"error":result.error.details})
         }
         if(ChechUser){
         return res.status(500).json({"message":'Email already exist'})
@@ -37,29 +37,30 @@ const register = async (req, res, next)=>{
     catch(err){
         console.log(err)
         logger.error(err.message)
-        return res.status(500).json('Something went wrong')
+        return res.status(500).json({"Error":'Something went wrong'})
     }
 } 
 
 const login = async (req, res, next)=>{
     try{
-        const user = await CozyRegister.findOne({username:req.body.username});
+        const user = await CozyRegister.findOne({userName:req.body.userName});
         if(!user){
-            return res.status(501).json({error:"Invalid Username and password"});
+            return res.status(501).json({"error":"Invalid Username and password"});
         }
         console.log(user);
         const IsValid = await bcrypt.compare(req.body.password,user.password);
         console.log(req.body.password);
+        console.log(IsValid)
         if(!IsValid){
-            return res.status(501).json({error:"Please enter valid details"});
+            return res.status(501).json({"error":"Please enter valid details"});
         }
         const token = jwt.sign({_id:user._id}, process.env.TOKEN,{expiresIn:'1h'} );
-        return res.json(token)
+        return res.json({"token":token})
     }
     catch(err){
         console.log(err);
         logger.error(err.message);
-        return res.status(500).json({Message:"Try after some time"})
+        return res.status(500).json({"Message":"Try after some time"})
     }
 }
 
