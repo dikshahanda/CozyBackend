@@ -19,7 +19,7 @@ const register = async (req, res, next)=>{
             return res.status(501).send({error:result.error.details})
         }
         if(ChechUser){
-        return res.status(500).json('Email already exist')
+        return res.status(500).json({"message":'Email already exist'})
        }
        else{
         const user = new CozyRegister(req.body);
@@ -49,6 +49,7 @@ const login = async (req, res, next)=>{
         }
         console.log(user);
         const IsValid = await bcrypt.compare(req.body.password,user.password);
+        console.log(req.body.password);
         if(!IsValid){
             return res.status(501).json({error:"Please enter valid details"});
         }

@@ -2,3 +2,4 @@
 {"level":"error","message":"Operation `cozyregisters.findOne()` buffering timed out after 10000ms"}
 {"level":"error","message":"Operation `cozyregisters.findOne()` buffering timed out after 10000ms"}
 {"level":"error","message":"Operation `cozyregisters.findOne()` buffering timed out after 10000ms"}
+{"level":"error","message":"data and hash arguments required"}
