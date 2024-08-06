@@ -54,7 +54,7 @@ const login = async (req, res, next)=>{
             return res.status(501).json({error:"Please enter valid details"});
         }
         const token = jwt.sign({_id:user._id}, process.env.TOKEN,{expiresIn:'1h'} );
-        return res.json(token)
+        return res.json({"token":token})
     }
     catch(err){
         console.log(err);
