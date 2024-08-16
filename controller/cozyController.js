@@ -49,12 +49,13 @@ const login = async (req, res, next)=>{
         }
         console.log(user);
         const IsValid = await bcrypt.compare(req.body.password,user.password);
-        console.log(req.body.password);
-        console.log(IsValid)
+        // console.log(req.body.password);
+        // console.log(IsValid)
         if(!IsValid){
             return res.status(501).json({"error":"Please enter valid details"});
         }
-        const token = jwt.sign({_id:user._id}, process.env.TOKEN,{expiresIn:'1h'} );
+        const token = jwt.sign({_id:user._id, role:user.role}, "abc",{expiresIn:'1h'} );
+        console.log(token)
         return res.json({"token":token})
     }
     catch(err){

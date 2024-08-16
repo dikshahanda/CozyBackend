@@ -1,12 +1,14 @@
-const { message } = require("../Joi/JoiSchema")
 
-const isAdmin = (req, res, next)=>{
-    if(!req.user){
-        return res.status(500).json({message:'unauthorized'});
-    }
-    if(req.user.role !== 'admin'){
-        return res.status(500).json({message:'unauthorized'});
-    }
-}
 
-module.exports = {isAdmin};
+// isAdmin middleware
+const isAdmin = (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).send({ message: 'Unauthorized' });
+    }
+    if (req.user.role !== 'admin') {
+      return res.status(403).send({ message: 'Forbidden' });
+    }
+    next();
+  };
+  
+  module.exports = {isAdmin};

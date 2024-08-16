@@ -8,6 +8,6 @@ const {isAdmin} = require('../middleware/checkRole');
 router.post('/register', register);
 // router.post('/login', verifyToken,isAdmin, login);
 router.post('/login', login);
-router.post('/product',products);
+// router.post('/product',products);
 
 module.exports = {router}
