@@ -21,7 +21,7 @@ const cart = async (req, res, next)=>{
         // if(!Checkuser){
         //     return res.status(200).json({'message':"user not found"});
         // }
-        const productid = req.body.products;
+        const productid = req.body.productId;
         console.log(productid)
         productSchema.findById(productid).then(response=>{
             if(!response){
@@ -32,17 +32,17 @@ const cart = async (req, res, next)=>{
         // if(!checkproduct){
         //     return res.status(200).json({'message':"product not found"});
         // }
-        const checkcart = await productSchema.findOne({_id:userid});
-        if(checkcart){
-            return res.status(200).json({'message':"cart not found"});
-        }
-        else{
-            const newCart = await CartSchema.create({ userId: userid,
-                products: [{
-                    productId: {  productid},
-                    quantity: 1,
-                } ]})
-        }
+        // const checkcart = await productSchema.findOne({_id:userid});
+        // if(checkcart){
+        //     return res.status(200).json({'message':"cart not found"});
+        // }
+        // else{
+        //     const newCart = await CartSchema.create({ userId: userid,
+        //         products: [{
+        //             productId: {  productid},
+        //             quantity: 1,
+        //         } ]})
+        // }
     }
     catch(err){
         console.log(err)
