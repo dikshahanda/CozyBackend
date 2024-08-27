@@ -9,40 +9,28 @@ const CartSchema = require('../model/cartSchema')
 
 const cart = async (req, res, next)=>{
     try{
-        const userid = req.body.userId;
-        console.log(userid)
-        userSchema.findById(userid).then(response=>{
-            if(!response){
-                return res.status(200).json({'message':"user not found"});
-            }
-        })
-        // const Checkuser =await userSchema.findOne({_id:userid});
-        // console.log(Checkuser)
-        // if(!Checkuser){
-        //     return res.status(200).json({'message':"user not found"});
-        // }
-        const productid = req.body.productId;
-        console.log(productid)
-        productSchema.findById(productid).then(response=>{
-            if(!response){
-                return res.status(200).json({'message':"product not found"});
-            }
-        })
-        // const checkproduct =await productSchema.findOne({_id:productid})
-        // if(!checkproduct){
-        //     return res.status(200).json({'message':"product not found"});
-        // }
-        // const checkcart = await productSchema.findOne({_id:userid});
-        // if(checkcart){
-        //     return res.status(200).json({'message':"cart not found"});
-        // }
-        // else{
-        //     const newCart = await CartSchema.create({ userId: userid,
-        //         products: [{
-        //             productId: {  productid},
-        //             quantity: 1,
-        //         } ]})
-        // }
+        const userId = req.body.userId;
+        let user = await userSchema.findOne({ _id: userId });
+
+        if (!user) {
+            return res
+                .status(400)
+                .send({ status: false, message: "Invalid user ID" });
+        }
+
+        let productId = req.body.productId;
+        let product = await productSchema.findOne({ _id: productId });
+        if (!product) {
+            return res
+                .status(400)
+                .send({ status: false, message: "Invalid product" });
+        }
+
+        else{
+            return res
+                .status(200)
+                .send({ status: true, message: "working" });
+        }
     }
     catch(err){
         console.log(err)
