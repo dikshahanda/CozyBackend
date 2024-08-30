@@ -6,7 +6,7 @@ const {isAdmin} = require('../middleware/checkRole');
 
 // router.post('/login', verifyToken,isAdmin, login);
 
-cartRouter.post('/',verifyToken,isAdmin,cart);
+cartRouter.post('/',verifyToken,cart);
 // cartRouter.get('/getproduct',getproduct);
 // cartRouter.get('/findproduct/:id',findproduct);
 // cartRouter.delete('/deletebyId/:id',verifyToken,isAdmin,deletebyId);
