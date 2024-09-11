@@ -1,12 +1,13 @@
 const express = require('express');
 const cartRouter = express.Router();
-const {cart} = require('../controller/cartController');
+const {cart, decreaseCart} = require('../controller/cartController');
 const {verifyToken} = require('../middleware/verifyToken');
 const {isAdmin} = require('../middleware/checkRole');
 
 // router.post('/login', verifyToken,isAdmin, login);
 
 cartRouter.post('/',verifyToken,cart);
+cartRouter.post('/decrease',verifyToken,decreaseCart);
 // cartRouter.get('/getproduct',getproduct);
 // cartRouter.get('/findproduct/:id',findproduct);
 // cartRouter.delete('/deletebyId/:id',verifyToken,isAdmin,deletebyId);

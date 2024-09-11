@@ -1,21 +1,116 @@
 const mongoose = require('mongoose');
-const orderSchema =  require('../model/orderSchema');
+const Order =  require('../model/orderSchema');
 const { response } = require('express');
+const User = require('../model/CozySchema');
+const Cart = require('../model/cartSchema');
+const Product = require('../model/productSchema');
 
 
 // post order
 
+// const customersOrder = async (req, res, next)=>{
+//     try{
+//         // For store full data in a varialbe
+//         const order = new orderSchema(req.body);
+//         await order.save();
+//         return res.status(200).json({"message":"Order successfully"})
+//     }
+//     catch(err){
+//         // If logic not work than error occured than this work
+//         return res.status(500).json({"error":"Something went wrong"})
+//     }
+// }
+
 const customersOrder = async (req, res, next)=>{
     try{
-        // For store full data in a varialbe
-        const order = new orderSchema(req.body);
-        await order.save();
-        return res.status(200).json({"message":"Order successfully"})
-    }
-    catch(err){
-        // If logic not work than error occured than this work
-        return res.status(500).json({"error":"Something went wrong"})
-    }
+        let userId = req.body.userId;
+        let productIds = [];
+        let discount=0;
+
+
+        let user = await User.exists({ _id: userId });
+
+        if (!userId || !user) {
+            return res
+                .status(400)
+                .send({ status: false, message: "Invalid user ID" });
+        }
+
+        let cart = await Cart.findOne({ userId: userId });
+        console.log(cart);
+        if (!cart) {
+            return res
+                .status(404)
+                .send({ status: false, message: "Cart not found for this user" });
+        } 
+        
+        else {
+
+
+            //Get all the IDS of products which are available for cart.
+            cart.products.forEach((element) => {
+                productIds.push(element["productId"]);
+            });
+
+            console.log(productIds);
+
+            //Fetch products by using product ids.
+            const productsByIds = await Product.find({ _id: { $in: productIds } });
+
+            console.log(productsByIds);
+
+
+            //Mapping the Quantity to the products
+            let result = await productsByIds.map((x) => {
+                let itemData = cart.products.find(
+                    (item) => item.productId === x._id.toString()
+                );
+                if (itemData) {
+                    x._doc.quantity = itemData.quantity;
+                    return x;
+                }
+            });
+
+            console.log(result);
+
+            //Find the Total of Products
+            let totalPrice = result.reduce(function (accumulator, item) {
+                return accumulator + item._doc.quantity * item._doc.productprice;
+            }, 0);
+
+            console.log(totalPrice)
+
+
+            // Create a Order creation onject
+            if (totalPrice && totalPrice > 0) {
+                let orderDetails = {
+                    userId: userId,
+                    products: cart.products,
+                    receiverName: req.body.receiverName,
+                    amount: totalPrice,
+                    discount: discount,
+                    couponcode: req.body.couponcode || 'N/A',
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    pmode: req.body.pmode,
+                    address: req.body.address,
+                    status: req.body.status
+                };
+
+                const newOrder = new Order(orderDetails);
+                const savedOrder = await newOrder.save();
+                return res.status(200).json(savedOrder);
+           }
+}
+
+}
+
+catch(err){
+    console.log(err)
+    // If logic not work than error occured than this work
+    return res.status(500).json({"error":"Something went wrong"})
+}
+    
 }
 
 // show data

@@ -1,18 +1,27 @@
-const { string } = require('joi');
-const mongoose = require('mongoose');
-const Email = require('mongoose-type-email');
+const mongoose = require("mongoose");
+const paginate = require('mongoose-paginate-v2');
 
-const orderSchema = new mongoose.Schema({
-    userid:{type:mongoose.Schema.Types.ObjectId},
-    username: {type: String,required: true},
-    orderDate: {type: Date,default: Date.now},
-    address:{type:String},
-    email:{type:Email},
-    phone:{type:Number},
-    amount:{type:Number}
-    // orderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'OrderItem'}]
-  });
-  
- module.exports = mongoose.model('orderSchema', orderSchema);
-  
-//   **Order Item Schema**
+
+const OrderSchema = new mongoose.Schema({
+    userId: { type: String, required: true },
+    products: [{
+        productId: {
+            type: String,
+        },
+        quantity: {
+            type: Number,
+            default: 1,
+        },
+    }, ],
+    receiverName: { type: String, required: true },
+    amount: { type: Number, required: true },
+    discount: { type: Number, required: true, default: 0 },
+    couponcode: { type: String, default: "NO COUPON" },
+    pmode: { type: String, required: true },
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
+    address: { type: Object, required: true },
+    status: { type: String, default: "pending" },
+}, { timestamps: true });
+OrderSchema.plugin(paginate);
+module.exports = mongoose.model("Order", OrderSchema);
