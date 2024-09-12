@@ -23,7 +23,6 @@ const register = async (req, res, next)=>{
        }
        else{
         const user = new CozyRegister(req.body);
-        const id = CozyRegister(req.body._id);
         bcrypt.hash(user.password, 10, async function(err, hash){
             if(err){
                 return next(err);
@@ -32,7 +31,7 @@ const register = async (req, res, next)=>{
             next();
             await user.save();
         });
-        return res.status(200).json({"message":"User register successfully","id": id})
+        return res.status(200).json({"message":"User register successfully","user": user})
        }
     }
     catch(err){
