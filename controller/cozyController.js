@@ -56,7 +56,7 @@ const login = async (req, res, next)=>{
         }
         const token = jwt.sign({_id:user._id, role:user.role}, "abc",{expiresIn:'1h'} );
         console.log(token)
-        return res.json({"token":token})
+        return res.json({"token":token,_id:user._id})
     }
     catch(err){
         console.log(err);
