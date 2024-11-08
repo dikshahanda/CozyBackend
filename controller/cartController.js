@@ -53,6 +53,17 @@ const cart = async (req, res, next)=>{
     }
 }
 
+const findcart= async(req, res)=>{
+    try{
+        const id = req.params.id;
+        let cart = await Cart.findOne({ userId: id });
+       return res.status(200).json(cart)
+    }
+    catch(error){
+        return res.status(500).json({"error":error})
+    }
+} 
+
 const decreaseCart = async (req, res, next)=>{
     try{
         const userId = req.body.userId;
@@ -101,5 +112,5 @@ const decreaseCart = async (req, res, next)=>{
     }
 }
 
-module.exports = {cart, decreaseCart}
+module.exports = {cart, decreaseCart, findcart}
 

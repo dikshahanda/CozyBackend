@@ -54,6 +54,20 @@ const findproduct= async(req, res)=>{
     }
 } 
 
+//find by id
+const findProductsByPIDS= async(req, res)=>{
+    try{
+        const pids = req.body.product_pids;
+        console.log(pids)
+        const products = await productSchema.find({ _id: { $in: pids } });
+        return res.status(200).json(products);
+
+    }
+    catch(error){
+        return res.status(500).json({"error":error})
+    }
+} 
+
 // delete by id
 
 const deletebyId = async (req, res )=>{
@@ -84,4 +98,4 @@ const upadtebyId = async (req, res)=>{
     }
 }
 
-module.exports = {products, getproduct, findproduct, deletebyId, upadtebyId};
+module.exports = {products, getproduct, findproduct, deletebyId, upadtebyId, findProductsByPIDS};

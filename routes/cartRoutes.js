@@ -1,6 +1,6 @@
 const express = require('express');
 const cartRouter = express.Router();
-const {cart, decreaseCart} = require('../controller/cartController');
+const {cart, decreaseCart, findcart} = require('../controller/cartController');
 const {verifyToken} = require('../middleware/verifyToken');
 const {isAdmin} = require('../middleware/checkRole');
 
@@ -8,7 +8,7 @@ const {isAdmin} = require('../middleware/checkRole');
 
 cartRouter.post('/',verifyToken,cart);
 cartRouter.post('/decrease',verifyToken,decreaseCart);
-// cartRouter.get('/getproduct',getproduct);
+cartRouter.get('/findcart/:id',verifyToken,findcart);
 // cartRouter.get('/findproduct/:id',findproduct);
 // cartRouter.delete('/deletebyId/:id',verifyToken,isAdmin,deletebyId);
 // cartRouter.put('/upadtebyId/:id',verifyToken,isAdmin,upadtebyId);
