@@ -116,13 +116,29 @@ catch(err){
 // show data
 
 const getorderdetails = async (req, res)=>{
-    try{
-        await orderSchema.find().then(data=>{
+    // try{
+    //     await orderSchema.find().then(data=>{
+    //         console.log(data)
+    //         return res.status(200).json(data);
+    //     })
+    // }
+    try {
+        // productSchema.paginate().then({});
+        const { page, perpage } = req.query;
+        const options = {
+            page: parseInt(page, 10),
+            limit: parseInt(perpage, 10),
+            sort: { createdAt: -1 },
+        };
+
+        Product.paginate({}, options).then(data => {
             return res.status(200).json(data);
+
         })
     }
     catch(err){
         // If logic not work than error occured than this work
+        console.log(err)
         return res.status(500).json({"error":"Something went wrong"})
     }
 }
