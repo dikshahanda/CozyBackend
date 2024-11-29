@@ -159,6 +159,18 @@ const findorder =  async (req, res) => {
     }
 }
 
+const findorderbyId =  async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id)
+        Order.findById(id).then(response => {
+            return res.status(200).json({ "product": response })
+        })
+    }
+    catch (error) {
+        return res.status(500).json({ "error": error })
+    }
+}
 
 // delete by ID
 
@@ -196,4 +208,4 @@ const updatebyid = async (req, res)=>{
     }
 }
 
-module.exports = {customersOrder, getorderdetails, findorder, deletebyid, updatebyid}
+module.exports = {customersOrder, getorderdetails, findorder, deletebyid, updatebyid, findorderbyId}
