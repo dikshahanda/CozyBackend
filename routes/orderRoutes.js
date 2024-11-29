@@ -9,7 +9,7 @@ const {isAdmin} = require('../middleware/checkRole');
 // orderrouter.post('/',verifyToken,isAdmin,customersOrder);
 orderrouter.post('/create',verifyToken,customersOrder);
 orderrouter.get('/',getorderdetails);
-orderrouter.get('/find/:id',findorder);
+orderrouter.get('/find/:userId',findorder);
 orderrouter.delete('/:id',verifyToken,isAdmin,deletebyid);
 orderrouter.put('/:id',verifyToken,isAdmin,updatebyid);
 

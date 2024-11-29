@@ -4,6 +4,7 @@ const { response } = require('express');
 const User = require('../model/CozySchema');
 const Cart = require('../model/cartSchema');
 const Product = require('../model/productSchema');
+const { orderrouter } = require('../routes/orderRoutes');
 
 
 // post order
@@ -131,7 +132,7 @@ const getorderdetails = async (req, res)=>{
             sort: { createdAt: -1 },
         };
 
-        Product.paginate({}, options).then(data => {
+        Order.paginate({}, options).then(data => {
             return res.status(200).json(data);
 
         })
@@ -145,20 +146,19 @@ const getorderdetails = async (req, res)=>{
 
 // Find by ID
 
-const findorder = async (req, res)=>{
-    try{
-        // store id into variable id
-        const id = req.params.id;
-        // for find order use findById method
-        orderSchema.findById(id).then(response=>{
-            return res.status(200).json(response);
+const findorder =  async (req, res) => {
+    try {
+        const id = req.params.userId;
+        console.log(id)
+        Order.find({userId:id}).then(response => {
+            return res.status(200).json({ "product": response })
         })
     }
-    catch(err){
-        // If logic not work than error occured than this work
-        return res.status(500).json({"error":"Something went wrong"})
+    catch (error) {
+        return res.status(500).json({ "error": error })
     }
 }
+
 
 // delete by ID
 
@@ -195,8 +195,5 @@ const updatebyid = async (req, res)=>{
         return res.status(500).json({"error":"Something went wrong"})
     }
 }
-
-
-
 
 module.exports = {customersOrder, getorderdetails, findorder, deletebyid, updatebyid}
